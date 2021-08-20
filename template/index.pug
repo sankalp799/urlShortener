@@ -1,0 +1,9 @@
+extend layout
+
+block content
+    form(action='/api/urlShort' method='POST')
+        input(type='text' name='destination' placeholder='full url' style='width:50%;')
+        input(type='submit' name='submit' value='submit')
+
+    p #{message}
+
