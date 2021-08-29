@@ -6,13 +6,18 @@ const urlShortenerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    short:{
+    short_id:{
         type: String,
         required: true,
         default: shortid.generate()        
     },
+    magic_url:{
+        type: String,
+        require: true,
+        default: process.env.ORIGIN + '/',
+    }
 });
 
-const urlShortenerModel = mongoose.model('url_shortener', urlShortenerSchema);
+const urlShortenerModel = mongoose.model('magicLink', urlShortenerSchema);
 
 module.exports = urlShortenerModel;

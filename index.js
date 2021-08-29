@@ -4,7 +4,37 @@ const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const shortRouter = require('./router/index');
+// import routers
+const indexRouter = require('./router/index');
+const magicUrlRouter = require('./router/magicUrl');
+
+
+//TEST
+//
+//
+/******************
+let urls = ['http://dashoff.herokuapp.com',
+            'https://dashoff.herokuapp.com',
+            'dashoff.herokuapp'];
+urls.forEach(url => {
+    try{
+    console.log(new URL(url));
+    }catch(e){
+        let reg_exp = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+        let url_regex = new RegExp(reg_exp);
+        if(url.match(url_regex)){
+            console.log(url);
+        }else{
+            console.log('invalid url');
+        }
+        // console.log(new URL('http://' + url));
+    }
+    console.log('------------------------');
+});
+***/
+//
+//
+//
 
 const app = express();
 const server = http.createServer(app);
@@ -17,7 +47,8 @@ app.set('view engine', 'pug');
 // use middleware
 app.use('/public', express.static(path.join(__dirname, './public'), {}));
 app.use(express.urlencoded({extended:false}));
-app.use('/', shortRouter);
+app.use('/', indexRouter);
+app.use('/api/urlShort', magicUrlRouter);
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -30,7 +61,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.use((req, res, next) => {
     res.status(404).send('404 not found');
-     // next();
+    // next();
 });
 
 server.listen(PORT, err => {

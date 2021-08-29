@@ -1,62 +1,39 @@
 const router = require('express').Router();
-const shortid = require('shortid');
-const ShortenerModel = require('../model/shortener');
+const magicUrlModel = require('../model/shortener');
 
 
-
+// get request for home page
+/*******
 router.get('/', (req, res) => {
-    console.log(req.hostname, req.port, req.path);
     res.render('index');
 });
+***/
 
-router.post('/api/urlShort', async (req, res) => {
-    //console.log('[API] message url: ', req.body.destination);
-    // console.log(JSON.parse(req.body));    
-    try{
-        const newDoc = await ShortenerModel.create({
-            destination: req.body.destination
-        });
 
-        res.json({
-            short: req.hostname + '/' + newDoc.short
-        });
-    }catch(err){
-        console.log(err.message);
-        res.json({
-            error: `couldn't generate short url please try again later`  
-        });
-    }
+// get request to redirect user to destination url
+// START
+router.get('/:shortID', async (req, res) => {
+    let id = req.params.shortID;
+    res.setHeader('Access-Control-Allow-Origin', '*');
     
-    /*
-    res.render('index', {
-        message: shortid.generate()
-    });
-    */
-});
-
-router.get('/:shortId', async (req, res) => {
     try{
-        console.log('[ROUTE REQUEST] ROUTER:',  req.path.split('/')[1]);
-        // console.log(req.origin + req.path);
-        let destinationURL = await ShortenerModel.findOne({
-            short: req.path.split('/')[1]
+        let destination = await magicUrlModel.findOne({
+            short_id: id,
         });
 
-        // console.log(destinationURL.destination);
-        
-        res.writeHead(301, {
-            Location: destinationURL.destination
-        });
-        
-        // res.writeHead(200);
-        res.end();
+        if(!destination){
+            return res.status(404).end();
+        }
+
+        // else
+        // found
+        // redirect user to destination.destinationUrl
+        //
+        res.redirect(destination.destination);
     }catch(err){
-        console.log(`[MONGO ERROR] fetch error: ${err.message}`);
-        res.render('index', {
-            message: `not found`
-        });
+        console.log(`[MAGIC API FETCH ERROR]: ${err.message}`);
+        res.status(500).json({'Error':'Server Internal Problem'});
     }
 });
-
 
 module.exports = router;
