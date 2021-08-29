@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv').config();
 
 // import routers
@@ -45,6 +46,7 @@ app.set('views', path.join(__dirname, './template'));
 app.set('view engine', 'pug');
 
 // use middleware
+app.use(cors());
 app.use('/public', express.static(path.join(__dirname, './public'), {}));
 app.use(express.urlencoded({extended:false}));
 app.use('/', indexRouter);
