@@ -5,6 +5,7 @@ const shortenerModel = require('../model/shortener');
 // post request to api for creating magic url
 // START
 magicAPI.post('/', async (req, res) => {
+    
     let destination = req.body.destination;
     res.setHeader('Access-Control-Allow-Origin', '*');
     //TEST URL IS VALID OR NOT

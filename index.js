@@ -48,7 +48,7 @@ app.set('view engine', 'pug');
 // use middleware
 app.use(cors());
 app.use('/public', express.static(path.join(__dirname, './public'), {}));
-app.use(express.urlencoded({extended:false}));
+app.use(express.json());
 app.use('/', indexRouter);
 app.use('/api/urlShort', magicUrlRouter);
 
