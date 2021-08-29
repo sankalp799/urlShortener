@@ -3,11 +3,11 @@ const magicUrlModel = require('../model/shortener');
 
 
 // get request for home page
-
+/*************
 router.get('/', (req, res) => {
     res.render('index');
 });
-/***/
+**/
 
 
 // get request to redirect user to destination url
