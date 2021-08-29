@@ -32,7 +32,7 @@ magicAPI.post('/', async (req, res) => {
     try{
         const inject = await new shortenerModel({
             destination: destination,
-            magic_url: process.env.HOST || req.hostname;
+            magic_url: process.env.HOST || req.hostname,
         });
         inject.magic_url += inject.short_id;
         // console.log(`[MONGOOSE SCHEMA INJECT]: ${inject}`);
